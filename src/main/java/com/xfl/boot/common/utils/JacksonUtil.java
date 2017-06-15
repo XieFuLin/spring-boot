@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,7 @@ public class JacksonUtil {
     /**
      * 自动注入objectMapper,已经配置了该bean.
      */
-    @Resource
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 将JavaBean转化为Json对象.
