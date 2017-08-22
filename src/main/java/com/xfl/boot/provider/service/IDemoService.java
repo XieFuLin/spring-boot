@@ -1,4 +1,4 @@
-package com.xfl.provider.service;
+package com.xfl.boot.provider.service;
 
 /**
  * Created by XFL

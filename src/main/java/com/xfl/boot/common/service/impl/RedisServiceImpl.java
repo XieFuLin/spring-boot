@@ -3,7 +3,6 @@ package com.xfl.boot.common.service.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xfl.boot.common.service.IRedisService;
 import com.xfl.boot.common.utils.JacksonUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -11,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RedisServiceImpl implements IRedisService {
 
-    @Autowired
+    @Resource
     private RedisTemplate<String, ?> redisTemplate;
 
     @Override

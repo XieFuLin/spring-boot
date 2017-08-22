@@ -1,12 +1,16 @@
-package com.xfl.boot;
+package com.xfl.boot.controller;
 
-import com.xfl.provider.service.IDemoService;
+import com.xfl.boot.entity.TestEntity;
+import com.xfl.boot.entity.User;
+import com.xfl.boot.provider.service.IDemoService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +29,17 @@ public class TestController {
         System.out.println("Test");
         Map<String,Object> result = new HashMap<>();
         result.put("msg","test");
-        System.out.println(demoService.sayHello("Boot Test"));
+        result.put("code", 12);
+        //   System.out.println(demoService.sayHello("Boot Test"));
         return result;
+    }
+
+    @RequestMapping(value = "/date")
+    public TestEntity test2(@RequestBody User param) {
+        System.out.println(param.getDesc());
+        TestEntity testEntity = new TestEntity();
+        testEntity.setDate(new Date());
+        testEntity.setDate2(new Date());
+        return testEntity;
     }
 }
