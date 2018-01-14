@@ -51,6 +51,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
         <!-- mybatis分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
