@@ -108,4 +108,11 @@ public class RestTemplateUtil {
         ResponseEntity<T> resultEntity = restTemplate.exchange(url, method, entity, bodyType);
         return resultEntity.getBody();
     }
+
+    public static void main(String[] args) {
+        double a = 0.77;
+        double b = 0.29;
+        System.out.println(a - b);
+        System.out.println(a + b);
+    }
 }
