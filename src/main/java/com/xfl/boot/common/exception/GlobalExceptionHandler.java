@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     //在返回自定义相应类的情况下必须有，这是@ControllerAdvice注解的规定
     @ResponseBody
     public ResponseData<Object> exceptionHandler(RuntimeException e, HttpServletResponse response) {
+        System.out.println(e);
         ResponseData<Object> responseData = new ResponseData<Object>();
         return responseData;
     }
