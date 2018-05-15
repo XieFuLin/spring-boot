@@ -1,9 +1,11 @@
 package com.xfl.boot.controller;
 
 import com.xfl.boot.common.utils.CryptAESAndRSAUtils;
+import com.xfl.boot.common.utils.ramq.HelloSender;
 import com.xfl.boot.entity.TestEntity;
 import com.xfl.boot.entity.User;
 import com.xfl.boot.provider.service.IDemoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,10 @@ import java.util.Map;
 public class TestController {
     @Resource
     private IDemoService demoService;
+
+    @Autowired
+    private HelloSender helloSender;
+
     @Value("${rsa.publickey}")
     private String publicKey;
     @RequestMapping(value = "/boot")
@@ -55,6 +61,13 @@ public class TestController {
         Map<String, String> result = new HashMap<>();
         result.put("msg", "test");
         CryptAESAndRSAUtils.decryptData(param, publicKey);
+        return result;
+    }
+
+    @RequestMapping(value = "/mq", method = RequestMethod.GET)
+    public String testMq() {
+        String result = "success";
+        helloSender.sendFanout();
         return result;
     }
 }

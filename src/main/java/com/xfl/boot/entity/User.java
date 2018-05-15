@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.io.Serializable;
+
 /**
  * Created by XFL
  * time on 2017/8/16 23:50
  * description:
  */
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-public class User {
+public class User implements Serializable {
     private String name;
     private String age;
     private String desc;
