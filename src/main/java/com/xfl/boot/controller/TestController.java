@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,10 @@ public class TestController {
         result.put("msg","test");
         result.put("code", 12);
         CryptAESAndRSAUtils.testSyncOrder();
+        try (BufferedReader reader = servletRequest.getReader()) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //   System.out.println(demoService.sayHello("Boot Test"));
         return result;
     }
