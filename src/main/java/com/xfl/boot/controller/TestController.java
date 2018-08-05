@@ -1,5 +1,7 @@
 package com.xfl.boot.controller;
 
+import com.xfl.boot.Service.UserService;
+import com.xfl.boot.bean.UserVo;
 import com.xfl.boot.common.utils.CryptAESAndRSAUtils;
 import com.xfl.boot.common.utils.ramq.HelloSender;
 import com.xfl.boot.entity.Emplyee;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -20,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +39,8 @@ public class TestController {
 
     @Autowired
     private HelloSender helloSender;
-
+    @Autowired
+    private UserService userService;
     @Value("${rsa.publickey}")
     private String publicKey;
     @RequestMapping(value = "/boot")
@@ -81,5 +86,14 @@ public class TestController {
     @RequestMapping(value = "/empy", method = RequestMethod.POST)
     public Emplyee saveEmployee(@RequestBody Emplyee empy) {
         return empy;
+    }
+
+    /**
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public List<UserVo> getUserList(@RequestParam(value = "name") String userName) {
+        return userService.getUserByName(userName);
     }
 }
