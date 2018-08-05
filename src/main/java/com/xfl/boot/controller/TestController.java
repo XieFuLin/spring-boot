@@ -2,6 +2,7 @@ package com.xfl.boot.controller;
 
 import com.xfl.boot.common.utils.CryptAESAndRSAUtils;
 import com.xfl.boot.common.utils.ramq.HelloSender;
+import com.xfl.boot.entity.Emplyee;
 import com.xfl.boot.entity.TestEntity;
 import com.xfl.boot.entity.User;
 import com.xfl.boot.provider.service.IDemoService;
@@ -52,7 +53,7 @@ public class TestController {
         return result;
     }
 
-    @RequestMapping(value = "/date")
+    @RequestMapping(value = "/date", method = RequestMethod.POST)
     public TestEntity test2(@RequestBody User param) {
         System.out.println(param.getDesc());
         TestEntity testEntity = new TestEntity();
@@ -75,5 +76,10 @@ public class TestController {
         String result = "success";
         helloSender.sendFanout();
         return result;
+    }
+
+    @RequestMapping(value = "/empy", method = RequestMethod.POST)
+    public Emplyee saveEmployee(@RequestBody Emplyee empy) {
+        return empy;
     }
 }

@@ -30,4 +30,9 @@ public class TestEntity {
     public void setDate2(Date date2) {
         this.date2 = date2;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

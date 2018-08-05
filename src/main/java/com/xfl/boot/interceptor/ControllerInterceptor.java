@@ -1,5 +1,7 @@
 package com.xfl.boot.interceptor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xfl.boot.common.utils.URLEncodedUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -32,9 +34,9 @@ public class ControllerInterceptor {
     private static final Logger log = LoggerFactory.getLogger(ControllerInterceptor.class);
     private static ThreadLocal<Long> startTime = new ThreadLocal<Long>();
     private static ThreadLocal<String> key = new ThreadLocal<String>();
-
+    private static ObjectMapper objectMapper = new ObjectMapper();
     /**
-     * 定义拦截规则：拦截com.dafy.insureagent.controller包下面的所有类中，有@RequestMapping注解的方法
+     * 定义拦截规则：拦截com.xfl.boot.controller..*(..))包下面的所有类中，有@RequestMapping注解的方法
      */
     @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
     public void controllerMethodPointcut() {
@@ -61,7 +63,6 @@ public class ControllerInterceptor {
             String name = enumeration.nextElement();
             String value = request.getHeader(name);
             headers.append(name + ":" + value).append(",");
-
         }
         String uri = UUID.randomUUID() + "|" + request.getRequestURI();
 
@@ -77,10 +78,16 @@ public class ControllerInterceptor {
             if (paramsArray != null && paramsArray.length > 0) {
                 for (int i = 0; i < paramsArray.length; i++) {
                     if (paramsArray[i] instanceof Serializable) {
-                        //
                         params.append(paramsArray[i].toString()).append(",");
                     } else {
-
+                        //使用json系列化 反射等等方法
+                        try {
+                            String param = objectMapper.writeValueAsString(paramsArray[i]);
+                            if (StringUtils.isNotBlank(param))
+                                params.append(param).append(",");
+                        } catch (JsonProcessingException e) {
+                            log.error("doBefore obj to json exception obj={},msg={}", paramsArray[i], e);
+                        }
                     }
                 }
             }
@@ -100,7 +107,19 @@ public class ControllerInterceptor {
         String uri = key.get();
         startTime.remove();
         key.remove();
-        log.info("response result<<<<<<uri={},result={},costTime={}ms", uri, obj, costTime);
+        String result = null;
+        if (obj instanceof Serializable) {
+            result = obj.toString();
+        } else {
+            if (obj != null) {
+                try {
+                    result = objectMapper.writeValueAsString(obj);
+                } catch (JsonProcessingException e) {
+                    log.error("doAfterReturing obj to json exception obj={},msg={}", obj, e);
+                }
+            }
+        }
+        log.info("response result<<<<<<uri={},result={},costTime={}ms", uri, result, costTime);
     }
 }
 

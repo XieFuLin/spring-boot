@@ -6,3 +6,4 @@ SpringBoot项目Demo
 2.spring-boot集成dubbo
 #集成logback
 3.spring-boot集成logback日志框架(完善中...)
+4. 运行maven命令:**mybatis-generator:generate**
