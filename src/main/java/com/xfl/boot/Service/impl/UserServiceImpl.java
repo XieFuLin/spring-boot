@@ -22,10 +22,17 @@ public class UserServiceImpl implements UserService {
     public List<UserVo> getUserByName(String userName) {
         Long st1Time = System.currentTimeMillis();
         List<UserVo> userVoList = userVoMapper.selectByName(userName);
+        System.out.println("firstQueryResukt: " + userVoList);
         System.out.println("firstQueryTime:" + (System.currentTimeMillis() - st1Time));
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
         Long st2Time = System.currentTimeMillis();
         List<UserVo> userVoList2 = userVoMapper.selectByName(userName);
+        System.out.println("secondQueryResukt: " + userVoList2);
         System.out.println("secondQueryTime:" + (System.currentTimeMillis() - st2Time));
-        return userVoList;
+        return userVoList2;
     }
 }

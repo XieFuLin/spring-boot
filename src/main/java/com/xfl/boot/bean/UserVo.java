@@ -162,4 +162,26 @@ public class UserVo {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    @Override
+    public String toString() {
+        return "UserVo{" +
+                "id=" + id +
+                ", outerUserId=" + outerUserId +
+                ", userId=" + userId +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", orgId=" + orgId +
+                ", orgName='" + orgName + '\'' +
+                ", provinceName='" + provinceName + '\'' +
+                ", provinceCode='" + provinceCode + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", cityCode='" + cityCode + '\'' +
+                ", entryDate=" + entryDate +
+                ", status=" + status +
+                ", idcardNo='" + idcardNo + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

@@ -31,6 +31,8 @@
         <druid.version>1.0.26</druid.version>
 		<log4j-api.version>2.10.0</log4j-api.version>
 		<log4j-core.version>2.10.0</log4j-core.version>
+        <google.zxing.version>3.3.2</google.zxing.version>
+        <hibernate-validator.version>6.0.12.Final</hibernate-validator.version>
 	</properties>
 
 	<dependencies>
@@ -128,9 +130,15 @@
 		<dependency>
 			<groupId>com.google.zxing</groupId>
 			<artifactId>core</artifactId>
-			<version>3.3.2</version>
+            <version>${google.zxing.version}</version>
 		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>dubbo</artifactId>
 			<version>${dubbo.version}</version>
