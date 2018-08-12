@@ -106,6 +106,7 @@ public class TestController {
         return userVo;
     }
 
+    //Controller上需要增加注解@Validated
     @RequestMapping(value = "val", method = RequestMethod.GET)
     public UserVo testVal(@RequestParam("phone")
                           @Pattern(regexp = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147)|(166)|(199)|(198))\\\\d{8}$", message = "手机号码不正确")
