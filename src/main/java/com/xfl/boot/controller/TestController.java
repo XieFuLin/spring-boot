@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
@@ -99,4 +101,15 @@ public class TestController {
         return userService.getUserByName(userName);
     }
 
+    @RequestMapping(value = "validation", method = RequestMethod.POST)
+    public UserVo testValidation(@RequestBody @Valid UserVo userVo) {
+        return userVo;
+    }
+
+    @RequestMapping(value = "val", method = RequestMethod.GET)
+    public UserVo testVal(@RequestParam("phone")
+                          @Pattern(regexp = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147)|(166)|(199)|(198))\\\\d{8}$", message = "手机号码不正确")
+                                  String phone) {
+        return new UserVo();
+    }
 }
