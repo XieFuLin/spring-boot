@@ -10,6 +10,7 @@ import com.xfl.boot.entity.User;
 import com.xfl.boot.provider.service.IDemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ import java.util.Map;
  * time on 2017/6/6 21:59
  * description:
  */
+@Validated
 @RestController
 @RequestMapping(value = "/test")
 public class TestController {
@@ -96,4 +98,5 @@ public class TestController {
     public List<UserVo> getUserList(@RequestParam(value = "name") String userName) {
         return userService.getUserByName(userName);
     }
+
 }

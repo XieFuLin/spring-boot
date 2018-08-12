@@ -1,5 +1,8 @@
 package com.xfl.boot.bean;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class UserVo {
@@ -8,9 +11,11 @@ public class UserVo {
     private Integer outerUserId;
 
     private Long userId;
-
+    @NotNull(message = "姓名不能为空")
+    @Size(min = 2, max = 10, message = "姓名最小为2个字符，最多为10个字符")
     private String name;
 
+    @Pattern(regexp = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147)|(166)|(199)|(198))\\\\d{8}$", message = "手机号码不正确")
     private String phone;
 
     private Integer orgId;

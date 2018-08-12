@@ -1,12 +1,15 @@
 package com.xfl.boot.common.exception;
 
 import com.xfl.boot.entity.ResponseData;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by XFL
@@ -15,12 +18,28 @@ import javax.servlet.http.HttpServletResponse;
  */
 @ControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(Exception.class)
     //在返回自定义相应类的情况下必须有，这是@ControllerAdvice注解的规定
     @ResponseBody
-    public ResponseData<Object> exceptionHandler(RuntimeException e, HttpServletResponse response) {
+    public ResponseData<Object> exceptionHandler(Exception e, HttpServletResponse response) {
         System.out.println(e);
         ResponseData<Object> responseData = new ResponseData<Object>();
+        //参数校验未通过异常
+        if (e instanceof MethodArgumentNotValidException) {
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;
+            List<ObjectError> errors = exception.getBindingResult().getAllErrors();
+            StringBuffer sb = new StringBuffer();
+            for (ObjectError error : errors) {
+                String message = error.getDefaultMessage();
+                sb.append(message).append(";");
+            }
+            responseData.setMsg(sb.toString());
+        } else {
+            //其他异常
+            responseData.setMsg(e.getMessage());
+        }
+        responseData.setCode(9999);
+
         return responseData;
     }
 }
