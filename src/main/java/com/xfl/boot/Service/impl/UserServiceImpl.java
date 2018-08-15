@@ -24,11 +24,6 @@ public class UserServiceImpl implements UserService {
         List<UserVo> userVoList = userVoMapper.selectByName(userName);
         System.out.println("firstQueryResukt: " + userVoList);
         System.out.println("firstQueryTime:" + (System.currentTimeMillis() - st1Time));
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            System.out.println(e);
-        }
         Long st2Time = System.currentTimeMillis();
         List<UserVo> userVoList2 = userVoMapper.selectByName(userName);
         System.out.println("secondQueryResukt: " + userVoList2);

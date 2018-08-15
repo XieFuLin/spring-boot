@@ -28,7 +28,7 @@
 		<dubbo.version>2.5.3</dubbo.version>
 		<zookeeper.version>3.4.8</zookeeper.version>
 		<zkclient.version>0.3</zkclient.version>
-        <druid.version>1.0.26</druid.version>
+        <druid.version>1.1.10</druid.version>
 		<log4j-api.version>2.10.0</log4j-api.version>
 		<log4j-core.version>2.10.0</log4j-core.version>
         <google.zxing.version>3.3.2</google.zxing.version>
@@ -95,7 +95,11 @@
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
 		<!--jackson相关框架包-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
