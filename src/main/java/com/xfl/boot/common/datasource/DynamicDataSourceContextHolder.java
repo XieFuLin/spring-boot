@@ -6,7 +6,30 @@ package com.xfl.boot.common.datasource;
  * description:
  */
 public class DynamicDataSourceContextHolder {
-    private static final ThreadLocal<String> contextHolder = new ThreadLocal<String>();
+    private static final ThreadLocal<String> handlerThredLocal = new ThreadLocal<String>();
 
+    /**
+     * 设置数据源
+     *
+     * @param dataSource
+     */
+    public static void setDataSource(String dataSource) {
+        handlerThredLocal.set(dataSource);
+    }
 
+    /**
+     * 获取数据源
+     *
+     * @return
+     */
+    public static String getDataSource() {
+        return handlerThredLocal.get();
+    }
+
+    /**
+     * 移除数据源
+     */
+    public static void clear() {
+        handlerThredLocal.remove();
+    }
 }
