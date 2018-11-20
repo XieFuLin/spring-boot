@@ -43,9 +43,11 @@ public class DynamicDataSourceAspect {
         }
         //获取注解上的数据源的值的信息
         String dataSourceKey = annotationClass.name();
-        if (StringUtils.isNotBlank(dataSourceKey)) {
+        if (StringUtils.isNotBlank(dataSourceKey) && DynamicDataSourceContextHolder.containsDataSource(dataSourceKey)) {
             //给当前的执行SQL的操作设置特殊的数据源的信息
             DynamicDataSourceContextHolder.setDataSource(dataSourceKey);
+        } else {
+            //使用默认数据源
         }
         logger.info("DynamicDataSourceAspect，dataSource change={}", dataSourceKey);
     }

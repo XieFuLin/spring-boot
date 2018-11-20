@@ -1,5 +1,8 @@
 package com.xfl.boot.common.datasource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by XFL
  * time on 2018/11/18 23:42
@@ -7,7 +10,11 @@ package com.xfl.boot.common.datasource;
  */
 public class DynamicDataSourceContextHolder {
     private static final ThreadLocal<String> handlerThredLocal = new ThreadLocal<String>();
-
+    /**
+     * 管理所有的数据源id
+     * 主要是为了判断数据源是否存在
+     */
+    public static List<String> dataSourceIds = new ArrayList<String>();
     /**
      * 设置数据源
      *
@@ -31,5 +38,19 @@ public class DynamicDataSourceContextHolder {
      */
     public static void clear() {
         handlerThredLocal.remove();
+    }
+
+    /**
+     * 判断指定DataSource当前是否存在
+     *
+     * @param dataSourceId
+     * @return
+     */
+    public static boolean containsDataSource(String dataSourceId) {
+        return dataSourceIds.contains(dataSourceId);
+    }
+
+    public static void addDbName(String dataName) {
+        dataSourceIds.add(dataName);
     }
 }
