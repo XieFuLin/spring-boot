@@ -7,6 +7,7 @@ import com.xfl.boot.common.utils.ramq.HelloSender;
 import com.xfl.boot.entity.Emplyee;
 import com.xfl.boot.entity.TestEntity;
 import com.xfl.boot.entity.User;
+import com.xfl.boot.interceptor.RateLimit;
 import com.xfl.boot.provider.service.IDemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,7 @@ import java.util.Map;
  * time on 2017/6/6 21:59
  * description:
  */
+@RateLimit
 @Validated
 @RestController
 @RequestMapping(value = "/test")

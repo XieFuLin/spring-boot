@@ -32,7 +32,7 @@ public class DynamicDataSourceConfig {
         // 多数据源
         Map<Object, Object> mutiSources = new HashMap<>();
         mutiSources.put("default", defaultDatasource);
-        DynamicDataSourceContextHolder.addDbName("default_datasource");
+        DynamicDataSourceContextHolder.addDbName("default");
         if (null != druidProperties.getMuti()) {
             for (Map.Entry<String, DruidMutiProp> druidMutiPropEntry : druidProperties.getMuti().entrySet()) {
                 String name = druidMutiPropEntry.getKey();

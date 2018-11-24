@@ -1,11 +1,8 @@
 package com.xfl.boot.common.datasource;
 
-import org.apache.commons.lang.StringUtils;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,36 +22,63 @@ import java.lang.reflect.Method;
 public class DynamicDataSourceAspect {
     private static Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
 
-    //@within在类上设置
-    //@annotation在方法上进行设置
-    @Pointcut("@within(com.xfl.boot.common.datasource.TargetDataSource)||@annotation(com.xfl.boot.common.datasource.TargetDataSource)")
-    public void pointcut() {
-    }
-
-    @Before("pointcut()")
-    public void doBefore(JoinPoint joinPoint) {
-        Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        TargetDataSource annotationClass = method.getAnnotation(TargetDataSource.class);//获取方法上的注解
-        if (annotationClass == null) {
-            annotationClass = joinPoint.getTarget().getClass().getAnnotation(TargetDataSource.class);//获取类上面的注解
-            if (annotationClass == null) {
-                return;
+    @Around("execution(* com.xfl.boot.dao.*.*(..))")
+//    @Around("@within(com.xfl.boot.common.datasource.TargetDataSource)||@annotation(com.xfl.boot.common.datasource.TargetDataSource)")
+    public Object pointcut(ProceedingJoinPoint joinPoint) throws Throwable {
+        try {
+            Class<?> target = joinPoint.getTarget().getClass();
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            TargetDataSource annotation = null;
+            Method method = signature.getMethod();
+            //获取方法上的注解
+            annotation = method.getAnnotation(TargetDataSource.class);
+            // 默认使用目标类型的注解，如果没有则使用其实现接口的注解类
+            if (annotation == null) {
+                for (Class<?> cls : target.getInterfaces()) {
+                    annotation = cls.getAnnotation(TargetDataSource.class);
+                    if (annotation != null) {
+                        break;
+                    }
+//               resetDataSource(cls, signature.getMethod());
+                }
             }
+            if (annotation != null) {
+                DynamicDataSourceContextHolder.setDataSource(annotation.name());
+            }
+//           for (Class<?> cls : target.getInterfaces()) {
+//               TargetDataSource annotation = cls.getAnnotation(TargetDataSource.class);
+//               if(annotation != null){
+//                   break;
+//               }
+////               resetDataSource(cls, signature.getMethod());
+//           }
+//           resetDataSource(target, signature.getMethod());
+            return joinPoint.proceed();
+        } finally {
+            DynamicDataSourceContextHolder.clear();
         }
-        //获取注解上的数据源的值的信息
-        String dataSourceKey = annotationClass.name();
-        if (StringUtils.isNotBlank(dataSourceKey) && DynamicDataSourceContextHolder.containsDataSource(dataSourceKey)) {
-            //给当前的执行SQL的操作设置特殊的数据源的信息
-            DynamicDataSourceContextHolder.setDataSource(dataSourceKey);
-        } else {
-            //使用默认数据源
-        }
-        logger.info("DynamicDataSourceAspect，dataSource change={}", dataSourceKey);
     }
 
-    @After("pointcut()")
-    public void after(JoinPoint point) {
-        //清理掉当前设置的数据源，让默认的数据源不受影响
-        DynamicDataSourceContextHolder.clear();
+    /**
+     * 提取目标对象方法注解和类注解中的数据源标识
+     */
+    private void resetDataSource(Class<?> cls, Method method) throws Exception {
+        try {
+            Class<?>[] types = method.getParameterTypes();
+            // 默认使用类注解
+            if (cls.isAnnotationPresent(TargetDataSource.class)) {
+                TargetDataSource source = cls.getAnnotation(TargetDataSource.class);
+                DynamicDataSourceContextHolder.setDataSource(source.name());
+            }
+            // 方法注解可以覆盖类注解
+            Method m = cls.getMethod(method.getName(), types);
+            if (m != null && m.isAnnotationPresent(TargetDataSource.class)) {
+                TargetDataSource source = m.getAnnotation(TargetDataSource.class);
+                DynamicDataSourceContextHolder.setDataSource(source.name());
+            }
+        } catch (Exception e) {
+            logger.error("resetDataSource exception error={}", e);
+            throw e;
+        }
     }
 }

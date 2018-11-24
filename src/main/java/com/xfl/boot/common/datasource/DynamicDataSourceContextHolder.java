@@ -9,7 +9,7 @@ import java.util.List;
  * description:
  */
 public class DynamicDataSourceContextHolder {
-    private static final ThreadLocal<String> handlerThredLocal = new ThreadLocal<String>();
+    private static final ThreadLocal<String> handlerThreadLocal = new ThreadLocal<String>();
     /**
      * 管理所有的数据源id
      * 主要是为了判断数据源是否存在
@@ -21,7 +21,7 @@ public class DynamicDataSourceContextHolder {
      * @param dataSource
      */
     public static void setDataSource(String dataSource) {
-        handlerThredLocal.set(dataSource);
+        handlerThreadLocal.set(dataSource);
     }
 
     /**
@@ -30,14 +30,14 @@ public class DynamicDataSourceContextHolder {
      * @return
      */
     public static String getDataSource() {
-        return handlerThredLocal.get();
+        return handlerThreadLocal.get();
     }
 
     /**
      * 移除数据源
      */
     public static void clear() {
-        handlerThredLocal.remove();
+        handlerThreadLocal.remove();
     }
 
     /**

@@ -2,10 +2,11 @@ package com.xfl.boot.Service.impl;
 
 import com.xfl.boot.Service.UserService;
 import com.xfl.boot.bean.UserVo;
+import com.xfl.boot.dao.QuestionsMapper;
 import com.xfl.boot.dao.UserVoMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -15,8 +16,10 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Resource
+    @Autowired
     private UserVoMapper userVoMapper;
+    @Autowired
+    private QuestionsMapper questionsMapper;
 
     @Override
     public List<UserVo> getUserByName(String userName) {
@@ -28,6 +31,8 @@ public class UserServiceImpl implements UserService {
         List<UserVo> userVoList2 = userVoMapper.selectByName(userName);
         System.out.println("secondQueryResukt: " + userVoList2);
         System.out.println("secondQueryTime:" + (System.currentTimeMillis() - st2Time));
+        int count = questionsMapper.selectCount();
+        System.out.println("count:" + count);
         return userVoList2;
     }
 }
