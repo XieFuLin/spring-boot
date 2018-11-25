@@ -15,7 +15,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
@@ -58,8 +57,6 @@ public class RateLimitInterceptor {
         }
         // 添加注解了的需要增加访问次数限制
         if (annotation != null) {
-            // 如果有session则返回session如果没有则返回null(避免创建过多的session浪费内存)
-            HttpSession session = request.getSession(false);
             String ip = getIpAddress(request);
             String uri = request.getRequestURI();
             int timeOutSeconds = annotation.timeOutSeconds();
