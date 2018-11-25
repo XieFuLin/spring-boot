@@ -23,7 +23,6 @@ public class DynamicDataSourceAspect {
     private static Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
 
     @Around("execution(* com.xfl.boot.dao.*.*(..))")
-//    @Around("@within(com.xfl.boot.common.datasource.TargetDataSource)||@annotation(com.xfl.boot.common.datasource.TargetDataSource)")
     public Object pointcut(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             Class<?> target = joinPoint.getTarget().getClass();
@@ -34,25 +33,17 @@ public class DynamicDataSourceAspect {
             annotation = method.getAnnotation(TargetDataSource.class);
             // 默认使用目标类型的注解，如果没有则使用其实现接口的注解类
             if (annotation == null) {
+                annotation = joinPoint.getTarget().getClass().getAnnotation(TargetDataSource.class);
                 for (Class<?> cls : target.getInterfaces()) {
                     annotation = cls.getAnnotation(TargetDataSource.class);
                     if (annotation != null) {
                         break;
                     }
-//               resetDataSource(cls, signature.getMethod());
                 }
             }
             if (annotation != null) {
                 DynamicDataSourceContextHolder.setDataSource(annotation.name());
             }
-//           for (Class<?> cls : target.getInterfaces()) {
-//               TargetDataSource annotation = cls.getAnnotation(TargetDataSource.class);
-//               if(annotation != null){
-//                   break;
-//               }
-////               resetDataSource(cls, signature.getMethod());
-//           }
-//           resetDataSource(target, signature.getMethod());
             return joinPoint.proceed();
         } finally {
             DynamicDataSourceContextHolder.clear();
